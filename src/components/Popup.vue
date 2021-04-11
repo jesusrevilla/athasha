@@ -28,13 +28,15 @@ export default {
             node: '',
             point: '',
             inputRules: [
-                v => v.length >= 3 || 'Minimum length is 3 characters'
+                v => v.length >= 3 || 'Invalid input'
             ]
         }
     },
     methods: {
         submit(){
-            console.log(this.node, this.point)
+            if(this.$refs.form.validate()){
+                console.log(this.node, this.point)
+            }
         }
     }
 }
