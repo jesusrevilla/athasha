@@ -1,7 +1,13 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+    theme: {
+        light: {
+            background: '#cccccc'
+        }
+    }
+});
 
 export default new Vuetify({
     icons:{

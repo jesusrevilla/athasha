@@ -1,47 +1,34 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard px-2">
     <h3 class="subheading grey--text mt-4">Dashboard</h3>
   
-    <v-container class="my-3">
-
-      <v-layout row class="pa-4">
-        <v-btn small flat color="grey-lighten-4" @click="sortBy('node')">
-          <v-icon left small>height</v-icon>
-          <span class="caption text-lowercase">By node</span>
-        </v-btn>
-      </v-layout>
-
-      <v-card outlined flat v-for="(screen_value, i) in screen_values" :key="i" class="ma-1 pa-1">
-        <v-layout row wrap class="pa-3">
-          <v-flex xs12 md3>
-            <div class="caption grey--text">Node</div>
-            <div>{{ screen_value.node }}</div>
-          </v-flex>
-          <v-flex xs6 md3>
-            <div class="caption grey--text">Point</div>
-            <div>
-              {{ screen_value.point }}
-            </div>
-          </v-flex>          
-          <v-flex xs4 md3>
-            <div class="caption grey--text">Value</div>
-            <div>
-              <v-btn plain fab x-small color="green" dark>
+    <v-container fluid class="my-3">
+      <v-layout row wrap>
+        <v-flex xs12 sm6 md4 lg3 v-for="(screen_value, i) in screen_values" :key="i">
+          <v-card class="text-xs-center ma-3" outlined elevation="2">
+            <v-card-title class="pl-3 pt-2">{{ screen_value.node }} </v-card-title>
+            <v-card-text>
+              <div class="grey--text">{{ screen_value.point }}</div>
+              <div id="chips-container">
+                <v-chip :class="`${screen_value.value} ma-2`" text-color="white">
+                  {{ screen_value.value }}
+                </v-chip>
+              </div>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <Popup />
+              <v-btn icon>
                 <v-icon>edit</v-icon>
               </v-btn>
-              {{ screen_value.value }}
-            </div>
-          </v-flex>
-          <v-flex xs2 md3>
-            <div class="caption grey--text">Delete</div>
-            <div>
-              <v-btn plain fab dark color="red" falt x-small>
-                <v-icon right>delete</v-icon>
+              <v-btn icon>
+                <v-icon>delete</v-icon>
               </v-btn>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-card>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-container>
 
   </div>
@@ -51,18 +38,20 @@
 
 <script>
 // @ is an alias to /src
+import Popup from '../components/Popup'
 
 export default {
+  components: { Popup },
   data() {
     return {    
       screen_values: [
-        {node: 'Modbus0', point: 'Emergency Stop', value: 'ON'},
-        {node: 'Modbus1', point: 'Buzzer', value: 'OFF'},
-        {node: 'Modbus3', point: 'Stop Button', value: 'ON'},
-        {node: 'Modbus0', point: 'Red Light', value: 'ON'},
-        {node: 'Modbus2', point: 'Green Light', value: 'OFF'},
-        {node: 'Modbus4', point: 'Emergency Stop', value: 'OFF'},
-        {node: 'Modbus5', point: 'Temperature', value: '10V'},
+        {node: 'Modbus0', point: 'Emergency Stop', value: 'on'},
+        {node: 'Modbus1', point: 'Buzzer', value: 'off'},
+        {node: 'Modbus3', point: 'Stop Button', value: 'on'},
+        {node: 'Modbus0', point: 'Red Light', value: 'on'},
+        {node: 'Modbus2', point: 'Green Light', value: 'off'},
+        {node: 'Modbus4', point: 'Emergency Stop', value: 'off'},
+        {node: 'Modbus5', point: 'Temperature', value: '10 degress'},
       
       ]
     }
@@ -75,13 +64,17 @@ export default {
 }
 </script>
 
-<style scoped>
-ul{
-  list-style-type: none;
-  padding: 0;
+<style>
+#chips-container .v-chip.on{
+  background: green;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+#chips-container .v-chip.off{
+  background: red;
+}
+
+
+#chips-container .v-chip {
+  background: blue;
 }
 </style>

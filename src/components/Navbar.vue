@@ -5,12 +5,11 @@
                 <img class="mx-3" :src="require('../assets/logo28.png')" height="25"/>
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <Popup /> 
-            <v-btn small flat class="mx-1 primary" to="/">
+            <v-btn small text class="mx-1 primary" to="/">
                 <span class="hidden-sm-and-down">Dashboard</span>
                 <v-icon right >dashboard</v-icon>
             </v-btn>
-            <v-btn small flat class="mx-1 primary" to="/admin">
+            <v-btn small text class="mx-1 primary" to="/admin">
                 <span class="hidden-sm-and-down">Admin</span>
                 <v-icon right >manage_accounts</v-icon>
             </v-btn>
@@ -20,10 +19,8 @@
 </template>
 
 <script>
-import Popup from './Popup'
 
 export default {
-    components: { Popup },
     data(){
         return{
             drawer: false,
