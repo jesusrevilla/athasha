@@ -39,27 +39,34 @@
 <script>
 // @ is an alias to /src
 import Popup from '../components/Popup'
+import db from '@/fb' 
 
 export default {
   components: { Popup },
   data() {
     return {    
-      screen_values: [
-        {node: 'Modbus0', point: 'Emergency Stop', value: 'on'},
-        {node: 'Modbus1', point: 'Buzzer', value: 'off'},
-        {node: 'Modbus3', point: 'Stop Button', value: 'on'},
-        {node: 'Modbus0', point: 'Red Light', value: 'on'},
-        {node: 'Modbus2', point: 'Green Light', value: 'off'},
-        {node: 'Modbus4', point: 'Emergency Stop', value: 'off'},
-        {node: 'Modbus5', point: 'Temperature', value: '10 degress'},
-      
-      ]
+      screen_values: []
     }
   },
   methods:{
     sortBy(prop){
       this.screen_values.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
     }
+  },
+  created() {
+    db.collection('screens').onSnapshot(res => {
+      const changes = res.docChanges();
+
+      changes.forEach(change => {
+        if(change.type === 'added'){
+          this.screen_values.push({
+            ...change.doc.data(),
+            id: change.doc.id
+          })
+        }
+      })
+
+    })
   }
 }
 </script>

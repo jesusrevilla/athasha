@@ -1,5 +1,6 @@
 <template color="grey lighten-3">
     <nav>
+
         <v-app-bar app>
             <v-app-bar-title>
                 <img class="mx-3" :src="require('../assets/logo28.png')" height="25"/>
