@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <div class="admin">
+    <h3 class="subheading grey--text mt-4">Admin</h3>
 
-    <h1>HomePage</h1>
   </div>
 
 

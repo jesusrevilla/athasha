@@ -1,24 +1,29 @@
-<template>
+<template color="grey lighten-3">
     <nav>
-        <v-toolbar app>
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>
-                <span>Athasha</span>
-                <span class="font-weight-light">App</span>
-            </v-toolbar-title>
+        <v-app-bar app>
+            <v-app-bar-title>
+                <img class="mx-3" :src="require('../assets/logo28.png')" height="25"/>
+            </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn flat color="grey">
-                <span>Sing Out</span>
-                <v-icon right>exit_to_app</v-icon>
+            <Popup /> 
+            <v-btn small flat class="mx-1 primary" to="/">
+                <span class="hidden-sm-and-down">Dashboard</span>
+                <v-icon right >dashboard</v-icon>
             </v-btn>
-        </v-toolbar>
-
-        <v-navigation-drawer v-model="drawer" app class="primary"></v-navigation-drawer>
+            <v-btn small flat class="mx-1 primary" to="/admin">
+                <span class="hidden-sm-and-down">Admin</span>
+                <v-icon right >manage_accounts</v-icon>
+            </v-btn>
+        </v-app-bar>
     </nav>
+
 </template>
 
 <script>
+import Popup from './Popup'
+
 export default {
+    components: { Popup },
     data(){
         return{
             drawer: false,
