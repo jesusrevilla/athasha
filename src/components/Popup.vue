@@ -48,7 +48,7 @@ export default {
                     point: this.point,
                     value: ''
                 }
-                db.collection('screens').add(node_point).then(() => {
+                db.collection('screen01').add(node_point).then(() => {
                     this.loading = false;
                 })
             }

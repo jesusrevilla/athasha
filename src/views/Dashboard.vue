@@ -4,6 +4,36 @@
   
     <v-container fluid class="my-3">
       <v-layout row wrap>
+        <v-flex xs12 sm6 md4 lg3>
+          <v-card class="text-xs-center ma-3" outlined elevation="2">
+            <v-card-title class="pl-3 pt-2">Modbus07</v-card-title>
+            <v-card-text>
+              <div class="grey--text">Temperature degrees C</div>
+              <div>
+                <v-row class="py-3" justify="space-around">
+                  <v-chip-group mandatory active-class="primary">
+                    <v-chip>20</v-chip>
+                    <v-chip>25</v-chip>
+                    <v-chip>30</v-chip>
+                    <v-chip>35</v-chip>
+                    <v-chip>40</v-chip>            
+                  </v-chip-group>
+                </v-row>
+              </div>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <Popup />
+              <v-btn icon>
+                <v-icon>edit</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon>delete</v-icon>
+              </v-btn>
+            </v-card-actions>           
+          </v-card>
+        </v-flex>
         <v-flex xs12 sm6 md4 lg3 v-for="(screen_value, i) in screen_values" :key="i">
           <v-card class="text-xs-center ma-3" outlined elevation="2">
             <v-card-title class="pl-3 pt-2">{{ screen_value.node }} </v-card-title>
@@ -54,7 +84,7 @@ export default {
     }
   },
   created() {
-    db.collection('screens').onSnapshot(res => {
+    db.collection('screen01').onSnapshot(res => {
       const changes = res.docChanges();
 
       changes.forEach(change => {
