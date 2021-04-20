@@ -14,8 +14,10 @@ import Navbar from '@/components/Navbar'
 export default {
   name: 'App',
   components: { Navbar},
-  data: () => ({
-    //
-  }),
+  data: function() {
+    return {
+      connection: null
+    }
+  }
 };
 </script>

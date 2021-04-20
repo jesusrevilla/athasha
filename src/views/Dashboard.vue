@@ -36,9 +36,8 @@
         </v-flex>
         <v-flex xs12 sm6 md4 lg3 v-for="(screen_value, i) in screen_values" :key="i">
           <v-card class="text-xs-center ma-3" outlined elevation="2">
-            <v-card-title class="pl-3 pt-2">{{ screen_value.node }} </v-card-title>
+            <v-card-title class="pl-3 pt-2">{{ screen_value.name }} </v-card-title>
             <v-card-text>
-              <div class="grey--text">{{ screen_value.point }}</div>
               <div id="chips-container">
                 <v-chip :class="`${screen_value.value} ma-2`" text-color="white">
                   {{ screen_value.value }}
@@ -69,34 +68,46 @@
 <script>
 // @ is an alias to /src
 import Popup from '../components/Popup'
-import db from '@/fb' 
 
 export default {
   components: { Popup },
   data() {
     return {    
-      screen_values: []
+      screen_values: [],
+      connection: null
     }
   },
   methods:{
-    sortBy(prop){
-      this.screen_values.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
+    sendMessasge: function(message) {
+      console.log(this.connection);
+      this.connection.send(message);
     }
   },
-  created() {
-    db.collection('screen01').onSnapshot(res => {
-      const changes = res.docChanges();
+  created: function() {
+    console.log("Starting Connection to WebSocket Server")
+    this.connection = new WebSocket("ws://127.0.0.1:6789/")
 
-      changes.forEach(change => {
-        if(change.type === 'added'){
-          this.screen_values.push({
-            ...change.doc.data(),
-            id: change.doc.id
-          })
-        }
-      })
+    this.connection.onopen = function(event){
+      console.log(event)
+      console.log("Connected")
+    }
 
-    })
+    this.connection.onmessage = function (event){
+      const data = JSON.parse(event.data);
+      switch(data.type){
+        case "schema":
+          var points = data.points
+          console.log(data)
+          for (var i = 0; i < points.length; i++){
+            console.log({name: points[i].name, value:0, type: points[i].type})
+          }
+          console.log(this.screen_values)  
+          break
+        case "initial_values":
+          console.log(data)
+          break
+      }
+    }
   }
 }
 </script>
