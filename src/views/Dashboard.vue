@@ -4,36 +4,6 @@
   
     <v-container fluid class="my-3">
       <v-layout row wrap>
-        <v-flex xs12 sm6 md4 lg3>
-          <v-card class="text-xs-center ma-3" outlined elevation="2">
-            <v-card-title class="pl-3 pt-2">Modbus07</v-card-title>
-            <v-card-text>
-              <div class="grey--text">Temperature degrees C</div>
-              <div>
-                <v-row class="py-3" justify="space-around">
-                  <v-chip-group mandatory active-class="primary">
-                    <v-chip>20</v-chip>
-                    <v-chip>25</v-chip>
-                    <v-chip>30</v-chip>
-                    <v-chip>35</v-chip>
-                    <v-chip>40</v-chip>            
-                  </v-chip-group>
-                </v-row>
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <Popup />
-              <v-btn icon>
-                <v-icon>edit</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </v-card-actions>           
-          </v-card>
-        </v-flex>
         <v-flex xs12 sm6 md4 lg3 v-for="(screen_value, i) in screen_values" :key="i">
           <v-card class="text-xs-center ma-3" outlined elevation="2">
             <v-card-title class="pl-3 pt-2">{{ screen_value.name }} </v-card-title>
@@ -47,12 +17,12 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <Popup />
+              
               <v-btn icon>
-                <v-icon>edit</v-icon>
+                <v-icon>arrow_upward</v-icon>
               </v-btn>
               <v-btn icon>
-                <v-icon>delete</v-icon>
+                <v-icon>arrow_downward</v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -67,10 +37,8 @@
 
 <script>
 // @ is an alias to /src
-import Popup from '../components/Popup'
 
 export default {
-  components: { Popup },
   data() {
     return {    
       screen_values: [],
@@ -98,16 +66,20 @@ export default {
     this.connection.onmessage = function (event){
       const data = JSON.parse(event.data);
       switch(data.type){
+        
         case "schema":
           var points = data.points
           
-          for (var i = 0; i < points.length; i++){
+          for (let i = 0; i < points.length; i++){
             points_array.push({name: points[i].name, value:0, type: points[i].type})
           }
-        
           break
+        
         case "initial_values":
-          console.log(data)
+
+          for (let i = 0; i < data.values.length; i++){
+            points_array[i].value = data.values[i]
+          }
           break
       }
     }
