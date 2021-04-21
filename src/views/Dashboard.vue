@@ -73,6 +73,7 @@ export default {
           for (let i = 0; i < points.length; i++){
             points_array.push({name: points[i].name, value:0, type: points[i].type})
           }
+          console.log(points)
           break
         
         case "initial_values":
@@ -80,6 +81,7 @@ export default {
           for (let i = 0; i < data.values.length; i++){
             points_array[i].value = data.values[i]
           }
+          console.log(data.values)
           break
       }
     }
