@@ -83,7 +83,7 @@ export default {
       this.connection.send(message);
     }
   },
-  created: function() {
+  created() {
     console.log("Starting Connection to WebSocket Server")
     this.connection = new WebSocket("ws://127.0.0.1:6789/")
 
