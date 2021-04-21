@@ -84,6 +84,9 @@ export default {
     }
   },
   created() {
+
+    var points_array = new Array()
+
     console.log("Starting Connection to WebSocket Server")
     this.connection = new WebSocket("ws://127.0.0.1:6789/")
 
@@ -97,17 +100,18 @@ export default {
       switch(data.type){
         case "schema":
           var points = data.points
-          console.log(data)
+          
           for (var i = 0; i < points.length; i++){
-            console.log({name: points[i].name, value:0, type: points[i].type})
+            points_array.push({name: points[i].name, value:0, type: points[i].type})
           }
-          console.log(this.screen_values)  
+        
           break
         case "initial_values":
           console.log(data)
           break
       }
     }
+    this.screen_values = points_array
   }
 }
 </script>
