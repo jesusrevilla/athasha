@@ -8,12 +8,27 @@
           <v-card class="text-xs-center ma-3" outlined elevation="2">
             <v-card-title class="pl-3 pt-2" >{{ screen_value.name }} </v-card-title>
             <v-card-text>
-              <div id="chips-container">
-                <v-chip :class="`${screen_value.value} ma-2`" text-color="white" 
-                @click="change(`${ screen_value.id }`, `${screen_value.value}`)" :id="`${ screen_value.id }`">
+              
+              <div id="chips-container-boolean"
+                v-if="`${screen_value.value}` === 'on' || `${screen_value.value}` === 'off'">
+                <v-chip :class="`${screen_value.value} ma-2`" text-color="white"   
+                @click="toggle(`${ screen_value.id }`, `${screen_value.value}`)" :id="`${ screen_value.id }`">
+                  {{ screen_value.value }}
+                </v-chip>              
+              </div>
+
+              <div v-else id="chips-container-analog">
+                <v-btn icon @click="increase(`${ screen_value.id }`, `${screen_value.value}`)">
+                  <v-icon>add</v-icon>
+                </v-btn>
+                <v-chip :class="`${screen_value.value} ma-2`" text-color="white" >
                   {{ screen_value.value }}
                 </v-chip>
+                <v-btn icon @click="decrease(`${ screen_value.id }`, `${screen_value.value}`)">
+                  <v-icon>remove</v-icon>
+                </v-btn>                  
               </div>
+
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -51,9 +66,15 @@ export default {
       console.log(this.connection);
       this.connection.send(message);
     },
-    change: (id, value) => {
-      console.log(id);
-      console.log(value)
+    toggle: function (id, value) {
+      console.log("Toggle id:" + id + " value:" + value);
+      this.connection.send(JSON.stringify({id: id, action: 'toggle'}))
+    },
+    increase: (id, value) => {
+      console.log("Increase id:" + id + " value:" + value)
+    },
+    decrease: (id, value) => {
+      console.log("Decrease id:" + id + " value:" + value)
     }
   },
   created() {
@@ -88,6 +109,10 @@ export default {
           }
           console.log(data.values)
           break
+
+        case "change":
+          console.log("Received id: " + data.id + " value: " + data.value)
+          points_array[data.id].value = data.value
       }
     }
     this.screen_values = points_array
@@ -96,16 +121,16 @@ export default {
 </script>
 
 <style>
-#chips-container .v-chip.on{
+#chips-container-boolean .v-chip.on{
   background: green;
 }
 
-#chips-container .v-chip.off{
+#chips-container-boolean .v-chip.off{
   background: red;
 }
 
 
-#chips-container .v-chip {
+#chips-container-analog .v-chip {
   background: blue;
 }
 </style>
