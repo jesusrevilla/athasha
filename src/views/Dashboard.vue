@@ -6,10 +6,11 @@
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 v-for="(screen_value, i) in screen_values" :key="i">
           <v-card class="text-xs-center ma-3" outlined elevation="2">
-            <v-card-title class="pl-3 pt-2">{{ screen_value.name }} </v-card-title>
+            <v-card-title class="pl-3 pt-2" >{{ screen_value.name }} </v-card-title>
             <v-card-text>
               <div id="chips-container">
-                <v-chip :class="`${screen_value.value} ma-2`" text-color="white">
+                <v-chip :class="`${screen_value.value} ma-2`" text-color="white" 
+                @click="change(`${ screen_value.id }`, `${screen_value.value}`)" :id="`${ screen_value.id }`">
                   {{ screen_value.value }}
                 </v-chip>
               </div>
@@ -49,6 +50,10 @@ export default {
     sendMessasge: function(message) {
       console.log(this.connection);
       this.connection.send(message);
+    },
+    change: (id, value) => {
+      console.log(id);
+      console.log(value)
     }
   },
   created() {
@@ -71,7 +76,7 @@ export default {
           var points = data.points
           
           for (let i = 0; i < points.length; i++){
-            points_array.push({name: points[i].name, value:0, type: points[i].type})
+            points_array.push({name: points[i].name, value:0, type: points[i].type, id:i})
           }
           console.log(points)
           break
